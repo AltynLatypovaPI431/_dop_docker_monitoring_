@@ -1,0 +1,96 @@
+{
+  "dashboard": {
+    "title": "Docker Container Monitoring",
+    "panels": [
+      {
+        "id": 1,
+        "title": "CPU Usage % (All Containers)",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "rate(container_cpu_usage_seconds_total[1m]) * 100",
+            "legendFormat": "{{name}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "Memory Usage (Bytes)",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "container_memory_usage_bytes",
+            "legendFormat": "{{name}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "bytes",
+            "min": 0
+          }
+        }
+      },
+      {
+        "id": 3,
+        "title": "Network Traffic",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "rate(container_network_receive_bytes_total[1m])",
+            "legendFormat": "{{name}} - RX"
+          },
+          {
+            "expr": "rate(container_network_transmit_bytes_total[1m])",
+            "legendFormat": "{{name}} - TX"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "Bps"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "Container Status",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "up{job=\"cadvisor\"}",
+            "legendFormat": "cAdvisor"
+          }
+        ],
+        "gridPos": {"h": 4, "w": 12, "x": 12, "y": 8},
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "green", "value": 1}
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "time": {
+      "from": "now-5m",
+      "to": "now"
+    },
+    "refresh": "5s"
+  },
+  "overwrite": true
+}

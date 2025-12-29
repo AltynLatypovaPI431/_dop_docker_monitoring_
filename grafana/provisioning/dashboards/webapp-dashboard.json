@@ -1,0 +1,29 @@
+{
+  "dashboard": {
+    "title": "WebApp Monitoring",
+    "panels": [
+      {
+        "id": 1,
+        "title": "WebApp CPU Usage %",
+        "type": "timeseries",
+        "targets": [{
+          "expr": "rate(container_cpu_usage_seconds_total{id=~'/docker/$WEBAPP_ID.*'}[1m]) * 100",
+          "legendFormat": "webapp"
+        }],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "WebApp Memory",
+        "type": "timeseries",
+        "targets": [{
+          "expr": "container_memory_usage_bytes{id=~'/docker/$WEBAPP_ID.*'}",
+          "legendFormat": "webapp"
+        }],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+      }
+    ],
+    "time": {"from": "now-5m", "to": "now"},
+    "refresh": "5s"
+  }
+}
